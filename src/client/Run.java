@@ -5,8 +5,10 @@
  */
 package client;
 
-
+import java.util.Map;
+import java.util.Scanner;
 import utils.Utils;
+
 /**
  *
  * @author p1509019
@@ -18,10 +20,22 @@ public class Run {
      */
     public static void main(String[] args) {
         String addr = "localhost";
-        String message = "hello serveur RX302";
         int port = 42081;
-        Client clt = new Client(addr, port);
-        System.out.println(clt.connect()?"Serveur RX302 ready : "+addr+":"+port:"Erreur Serveur RX302");
+        Client clt = new Client(addr, port, 47000, 47100);
+
+        if (clt.connect()) {
+            System.out.println("Serveur RX302 ready : " + addr + ":" + port);
+            String answer = "";
+            String message;
+            do {
+                Scanner sc = new Scanner(System.in);
+                message = sc.nextLine();
+                if(!message.equals("#close"))
+                    clt.sendPacket(message);
+            } while (!message.equals("#close"));
+        } else {
+            System.out.println("Erreur Serveur RX302");
+        }
     }
-    
+
 }
