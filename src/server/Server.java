@@ -10,7 +10,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,11 +39,14 @@ public class Server {
                 String nameClient = dp.getAddress().getHostName();
                 String addrClient = dp.getAddress().getHostAddress();
                 int portClient = dp.getPort();
-                
-                if(!connectedClients.contains(addrClient + portClient)){                
+
+                if (!connectedClients.contains(addrClient + portClient)) {
                     System.out.println("Nouveau Client : " + addrClient + ":" + portClient);
+                    connectedClients.add(addrClient + portClient);
+                } else {
+                    String msg = new String(dp.getData()).trim();
+                    System.out.println(msg);
                 }
-                connectedClients.add(addrClient + portClient);
                 final Communication com1 = new Communication(nameClient, portClient);
                 new Thread() {
                     @Override
@@ -59,13 +61,5 @@ public class Server {
         } catch (IOException ex) {
             Logger.getLogger(client.Run.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public boolean isRunning() {
-        return ds.isConnected();
-    }
-    
-    public static void printServer(String msg){
-        System.out.println(msg);
     }
 }

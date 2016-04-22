@@ -28,11 +28,9 @@ public class Communication {
         this.ipClient = ipClient;
         this.portClient = portClient;
         try {
-            ds = new DatagramSocket(/*portClient, InetAddress.getByName(ipClient)*/);
+            ds = new DatagramSocket();
         } catch (SocketException ex) {
             Logger.getLogger(Communication.class.getName()).log(Level.SEVERE, null, ex);
-        /*} catch (UnknownHostException ex) {
-            Logger.getLogger(Communication.class.getName()).log(Level.SEVERE, null, ex);*/
         }
     }
 
@@ -42,11 +40,7 @@ public class Communication {
             DatagramPacket dpAns;
             dpAns = new DatagramPacket(data, data.length, InetAddress.getByName(ipClient), portClient);
             DatagramPacket dp = new DatagramPacket(new byte[128], 128);
-            String msg;
             ds.send(dpAns);
-            ds.receive(dp);
-            msg = new String(dp.getData()).trim();
-            Server.printServer(msg);
         } catch (UnknownHostException ex) {
             Logger.getLogger(Communication.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
